@@ -131,6 +131,9 @@ export function compareVersions(a: string, b: string): number {
 
 async function checkForUpdate(): Promise<void> {
   try {
+    const disableUpdateCheck = String(process.env.FT_DISABLE_UPDATE_CHECK ?? '').toLowerCase();
+    if (disableUpdateCheck === '1' || disableUpdateCheck === 'true' || disableUpdateCheck === 'yes') return;
+
     const cacheFile = path.join(dataDir(), '.update-check');
     // Re-fetch from npm if cache is stale (>24hr)
     let needsFetch = true;
